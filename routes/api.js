@@ -3,6 +3,7 @@ var router = express.Router();
 
 const Distributors = require("../model/distributors");
 const Fruits = require("../model/fruits");
+const User = require("../model/user");
 
 //Add distributor
 router.post("/add-distributor", async (req, res) => {
@@ -98,11 +99,11 @@ router.get("/get-list-fruit-in-price", async (rq, rs) => {
     const { price_start, price_end } = rq.query;
 
     const query = { price: { $gte: price_start, $lte: price_end } };
-    const data = await Fruits.find(query, "name quantity price id distributor")
+    const data = await Fruits.find(query, "name quantity price id_distributors")
       .populate("id_distributors")
       .sort({ quantity: -1 })
       .skip(0)
-      .limit(2);
+      .limit(3);//Lấy 3 sản phẩm
     rs.json({
       status: 200,
       messenger: "List fruit",
@@ -162,6 +163,35 @@ router.put("/update-fruit-by-id/:id", async (rq, rs) => {
       rs.json({
         status: 400,
         messenger: "Erro, update falied",
+        data: [],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/add-user", async (rq, rs) => {
+  try {
+    const data = rq.body;
+    const newUser = new User({
+      username: data.username,
+      password: data.password,
+      email: data.email,
+      name: data.name,
+      avatar: data.avatar,
+    });
+    const reslut = await newUser.save();
+    if (reslut) {
+      rs.json({
+        status: 200,
+        messenger: "Add user successfully",
+        data: data,
+      });
+    } else {
+      rs.json({
+        status: 400,
+        messenger: "Erro add user failed",
         data: [],
       });
     }
