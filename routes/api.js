@@ -4,6 +4,7 @@ var router = express.Router();
 const Distributors = require("../model/distributors");
 const Fruits = require("../model/fruits");
 
+//Add distributor
 router.post("/add-distributor", async (req, res) => {
   try {
     const data = req.body;
@@ -29,6 +30,8 @@ router.post("/add-distributor", async (req, res) => {
     console.log("faaaa");
   }
 });
+
+//Add fruti
 router.post("/add-fruit", async (req, res) => {
   try {
     const data = req.body;
@@ -59,6 +62,8 @@ router.post("/add-fruit", async (req, res) => {
     console.log(error);
   }
 });
+
+//Get list fruit
 router.get("/get-list-fruit", async (rq, rs) => {
   try {
     const data = await Fruits.find().populate("id_distributors");
@@ -72,6 +77,7 @@ router.get("/get-list-fruit", async (rq, rs) => {
   }
 });
 
+//get fruit by id
 router.get("/get-fruit-by-id/:id", async (rq, rs) => {
   try {
     const { id } = rq.params;
@@ -86,6 +92,7 @@ router.get("/get-fruit-by-id/:id", async (rq, rs) => {
   }
 });
 
+//get list fruit in price
 router.get("/get-list-fruit-in-price", async (rq, rs) => {
   try {
     const { price_start, price_end } = rq.query;
@@ -106,6 +113,7 @@ router.get("/get-list-fruit-in-price", async (rq, rs) => {
   }
 });
 
+//get list fruit have name a or x
 router.get("/get-list-fruit-have-name-a-or-x", async (rq, rs) => {
   try {
     const query = {
@@ -126,6 +134,7 @@ router.get("/get-list-fruit-have-name-a-or-x", async (rq, rs) => {
   }
 });
 
+//update fruit by id
 router.put("/update-fruit-by-id/:id", async (rq, rs) => {
   try {
     const { id } = rq.params;
